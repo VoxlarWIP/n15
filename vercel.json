@@ -1,0 +1,22 @@
+{
+  "version": 2,
+  "routes": [
+    { "src": "/api/(.*)", "dest": "/api/$1" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/deobf", "dest": "/deobf.html" },
+    { "src": "/deobf.html", "dest": "/deobf.html" },
+    { "src": "/", "dest": "/index.html" }
+  ],
+  "env": {
+    "DEOBF_PATH": ""
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Content-Type", "value": "application/json" },
+        { "key": "Cache-Control", "value": "no-store" }
+      ]
+    }
+  ]
+}

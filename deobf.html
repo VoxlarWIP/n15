@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>NO-V15Today — Deobfuscator</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔓</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/deobf.css">
+</head>
+<body>
+
+<!-- ─── APP NAV ──────────────────────────────────────────────────── -->
+<nav class="app-nav">
+  <div class="app-nav-inner">
+    <div class="app-nav-left">
+      <a href="/" class="app-nav-logo">
+        <span class="logo-badge">NO</span>
+        V15Today
+      </a>
+      <div class="app-nav-sep"></div>
+      <span class="app-nav-filename" id="nav-filename"></span>
+    </div>
+    <div class="app-nav-right">
+      <div class="app-nav-status">
+        <span class="status-dot" id="nav-status-dot"></span>
+        <span id="nav-status-text" style="font-size:.75rem;color:var(--text-muted)">Checking…</span>
+      </div>
+      <button class="btn btn-ghost btn-icon" id="settings-btn" data-tooltip="Backend settings" aria-label="Settings">
+        <svg data-lucide="settings" class="icon-md"></svg>
+      </button>
+      <a href="/" class="btn btn-ghost btn-icon" data-tooltip="Back to home" aria-label="Home">
+        <svg data-lucide="home" class="icon-md"></svg>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── CAPABILITY BANNER ────────────────────────────────────────── -->
+<div class="cap-banner" id="cap-banner">
+  <svg data-lucide="info" width="14" height="14" style="flex-shrink:0"></svg>
+  <span id="cap-banner-text"></span>
+  <button class="cap-banner-close" id="cap-banner-close" aria-label="Dismiss">
+    <svg data-lucide="x" width="13" height="13"></svg>
+  </button>
+</div>
+
+<!-- ─── 3-PANEL LAYOUT ───────────────────────────────────────────── -->
+<div class="app-layout">
+
+  <!-- ════════════ INPUT PANEL ════════════ -->
+  <div class="app-panel" id="panel-input">
+    <div class="panel-header">
+      <div class="panel-title">
+        <svg data-lucide="file-code-2" class="icon-sm"></svg>
+        Input
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-ghost btn-icon btn-sm" id="btn-clear-input" data-tooltip="Clear input" aria-label="Clear input">
+          <svg data-lucide="x" class="icon-sm"></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="input-tabs">
+      <button class="input-tab active" id="tab-upload">
+        <svg data-lucide="upload" width="13" height="13"></svg>
+        Upload / Drop
+      </button>
+      <button class="input-tab" id="tab-paste">
+        <svg data-lucide="clipboard" width="13" height="13"></svg>
+        Paste
+      </button>
+    </div>
+
+    <!-- File info bar (hidden until file loaded) -->
+    <div class="file-info" id="file-info" style="display:none">
+      <svg data-lucide="file" width="13" height="13" style="color:var(--text-muted);flex-shrink:0"></svg>
+      <span class="file-info-name" id="file-info-name"></span>
+      <span class="file-info-sep">·</span>
+      <span class="file-info-meta" id="file-info-size"></span>
+      <span class="file-info-sep">·</span>
+      <span class="file-info-meta" id="file-info-lines"></span>
+    </div>
+
+    <!-- Upload section -->
+    <div id="upload-section" class="panel-body" style="display:flex;flex-direction:column">
+      <div class="drop-zone" id="drop-zone">
+        <input type="file" id="file-input" accept=".lua,.luau,.txt" aria-label="Upload Lua file">
+        <div class="drop-zone-icon">
+          <svg data-lucide="upload-cloud" width="28" height="28"></svg>
+        </div>
+        <div class="drop-zone-title">Drop a .lua file here</div>
+        <div class="drop-zone-sub">or click to browse · also accepts .luau and .txt</div>
+        <button class="btn btn-sm" style="pointer-events:none">Choose File</button>
+      </div>
+
+      <!-- Input code viewer (shown after file loaded) -->
+      <div class="code-viewer" id="in-viewer" style="flex:1;display:flex;flex-direction:column;min-height:0">
+        <div class="viewer-toolbar">
+          <div class="viewer-search">
+            <svg data-lucide="search" width="13" height="13"></svg>
+            <input id="in-search" type="text" placeholder="Search…" aria-label="Search input">
+            <span class="viewer-matches" id="in-matches"></span>
+          </div>
+        </div>
+        <div class="code-scroll-area" id="in-scroll-area">
+          <div class="code-inner">
+            <div class="line-numbers" id="in-nums"></div>
+            <div class="code-lines"   id="in-lines">
+              <div class="code-empty">
+                <svg data-lucide="file-code-2" width="24" height="24" style="color:var(--text-dim)"></svg>
+                No file loaded
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Paste section -->
+    <div id="paste-section" class="panel-body" style="display:none">
+      <textarea
+        class="paste-area"
+        id="paste-area"
+        placeholder="Paste your Luraph-protected Lua source here…"
+        spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off"
+        aria-label="Paste Lua source"
+      ></textarea>
+    </div>
+  </div>
+
+  <!-- ════════════ CONFIG PANEL ════════════ -->
+  <div class="app-panel" id="panel-config" style="border-right:1px solid var(--border)">
+    <div class="panel-header">
+      <div class="panel-title">
+        <svg data-lucide="sliders-horizontal" class="icon-sm"></svg>
+        Options
+      </div>
+    </div>
+
+    <div class="panel-body config-scroll">
+
+      <!-- MODE -->
+      <div class="config-section">
+        <div class="config-section-label">Mode</div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">detect</span>
+            <span class="config-item-flag">--detect</span>
+          </div>
+          <div class="config-item-desc">Identify the obfuscator type and exit without deobfuscating. Fast, no engine required.</div>
+          <div class="config-item-control">
+            <label class="toggle">
+              <input type="checkbox" id="cfg-detect">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+            <span class="toggle-label">Detection only</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">no-devirt</span>
+            <span class="config-item-flag">--no-devirt</span>
+          </div>
+          <div class="config-item-desc">Fast execution trace only (~2 sec). Skips bytecode lifting (stages 3–6). Use for quick inspection or large scripts.</div>
+          <div class="config-item-control">
+            <label class="toggle">
+              <input type="checkbox" id="cfg-no-devirt">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+            <span class="toggle-label">Trace mode (~2s)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RUNTIME -->
+      <div class="config-section">
+        <div class="config-section-label">Runtime</div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">no-hooks</span>
+            <span class="config-item-flag">--no-hooks</span>
+          </div>
+          <div class="config-item-desc">Disable VM closure entry instrumentation. May help with scripts that detect hooks.</div>
+          <div class="config-item-control">
+            <label class="toggle">
+              <input type="checkbox" id="cfg-no-hooks">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+            <span class="toggle-label">Disabled</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">no-fold</span>
+            <span class="config-item-flag">--no-fold</span>
+          </div>
+          <div class="config-item-desc">Disable loop and helper folding in trace mode.</div>
+          <div class="config-item-control">
+            <label class="toggle">
+              <input type="checkbox" id="cfg-no-fold">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+            <span class="toggle-label">Disabled</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">timeout</span>
+            <span class="config-item-flag">--timeout &lt;sec&gt;</span>
+          </div>
+          <div class="config-item-desc">Hard timeout per Luau execution pass. Default: 90s.</div>
+          <div class="config-item-control">
+            <input type="number" class="num-input" id="cfg-timeout" value="90" min="5" max="600" aria-label="Timeout seconds">
+            <span style="font-size:.76rem;color:var(--text-muted)">sec</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">budget</span>
+            <span class="config-item-flag">--budget &lt;sec&gt;</span>
+          </div>
+          <div class="config-item-desc">Soft execution budget for script runtime. Default: 30s.</div>
+          <div class="config-item-control">
+            <input type="number" class="num-input" id="cfg-budget" value="30" min="5" max="300" aria-label="Budget seconds">
+            <span style="font-size:.76rem;color:var(--text-muted)">sec</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADVANCED -->
+      <div class="config-section">
+        <div class="config-section-label">Advanced</div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">max-runs</span>
+            <span class="config-item-flag">--max-runs &lt;n&gt;</span>
+          </div>
+          <div class="config-item-desc">Maximum reruns allowed when anti-tamper traps are encountered. Default: 12.</div>
+          <div class="config-item-control">
+            <input type="number" class="num-input" id="cfg-max-runs" value="12" min="1" max="100" aria-label="Max runs">
+            <span style="font-size:.76rem;color:var(--text-muted)">reruns</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">devirt-rounds</span>
+            <span class="config-item-flag">--devirt-rounds</span>
+          </div>
+          <div class="config-item-desc">Maximum constant decryption rounds in the REPL pass. Default: 200.</div>
+          <div class="config-item-control">
+            <input type="number" class="num-input" id="cfg-devirt-rounds" value="200" min="10" max="2000" aria-label="Devirt rounds">
+            <span style="font-size:.76rem;color:var(--text-muted)">rounds</span>
+          </div>
+        </div>
+
+        <div class="config-item">
+          <div class="config-item-top">
+            <span class="config-item-name">debug</span>
+            <span class="config-item-flag">--debug</span>
+          </div>
+          <div class="config-item-desc">Keep intermediate disassembly files in the output folder for inspection.</div>
+          <div class="config-item-control">
+            <label class="toggle">
+              <input type="checkbox" id="cfg-debug">
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+            <span class="toggle-label">Keep intermediates</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /config-scroll -->
+
+    <!-- Run footer -->
+    <div class="config-footer">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span style="font-size:.72rem;color:var(--text-dim)">Ctrl+Enter to run</span>
+        <span class="elapsed" id="elapsed-display"></span>
+      </div>
+      <button class="btn btn-primary btn-run" id="btn-run">
+        <svg data-lucide="play" class="icon-sm"></svg>
+        <span id="btn-run-text">Deobfuscate</span>
+        <svg data-lucide="loader" class="icon-sm spinner" id="btn-run-spinner" style="display:none"></svg>
+      </button>
+    </div>
+
+    <!-- Stages list -->
+    <div class="stages-list" id="stages-list"></div>
+
+  </div><!-- /panel-config -->
+
+  <!-- ════════════ OUTPUT PANEL ════════════ -->
+  <div class="app-panel" id="panel-output">
+    <div class="panel-header">
+      <div class="panel-title">
+        <svg data-lucide="code-2" class="icon-sm"></svg>
+        Output
+      </div>
+      <div class="panel-actions">
+        <button class="btn btn-ghost btn-icon btn-sm" id="btn-copy-output" data-tooltip="Copy to clipboard" aria-label="Copy output">
+          <svg data-lucide="copy" class="icon-sm"></svg>
+        </button>
+        <button class="btn btn-ghost btn-icon btn-sm" id="btn-download" data-tooltip="Download .lua" aria-label="Download output">
+          <svg data-lucide="download" class="icon-sm"></svg>
+        </button>
+        <button class="btn btn-ghost btn-icon btn-sm" id="btn-clear-output" data-tooltip="Clear output" aria-label="Clear output">
+          <svg data-lucide="x" class="icon-sm"></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Output stats bar (hidden until output present) -->
+    <div class="output-stats" id="output-stats" style="display:none">
+      <div class="stat">
+        <svg data-lucide="align-left" width="12" height="12" style="color:var(--text-muted)"></svg>
+        <span id="stat-lines" class="stat-val"></span>
+        <span>lines</span>
+      </div>
+      <div class="stat">
+        <svg data-lucide="hard-drive" width="12" height="12" style="color:var(--text-muted)"></svg>
+        <span id="stat-size" class="stat-val"></span>
+      </div>
+      <div class="stat">
+        <svg data-lucide="clock" width="12" height="12" style="color:var(--text-muted)"></svg>
+        <span id="stat-time" class="stat-val"></span>
+      </div>
+      <div class="stat">
+        <svg data-lucide="cpu" width="12" height="12" style="color:var(--text-muted)"></svg>
+        <span id="stat-mode" class="stat-val"></span>
+        <span>mode</span>
+      </div>
+    </div>
+
+    <!-- Detection result (hidden until detect run) -->
+    <div id="detect-result" style="display:none"></div>
+
+    <!-- Error block (hidden until error) -->
+    <div class="error-block" id="error-block" style="display:none">
+      <div class="error-block-title">
+        <svg data-lucide="alert-circle" width="15" height="15"></svg>
+        Error
+      </div>
+      <div class="error-block-msg" id="error-msg"></div>
+      <div class="error-block-hint" id="error-hint"></div>
+    </div>
+
+    <!-- Empty state -->
+    <div class="output-empty" id="output-empty">
+      <svg data-lucide="arrow-left" width="22" height="22" style="color:var(--text-dim)"></svg>
+      <span>Configure and click <strong>Deobfuscate</strong></span>
+      <span style="font-size:.76rem;color:var(--text-dim)">Output will appear here</span>
+    </div>
+
+    <!-- Output viewer (hidden until output present) -->
+    <div id="output-viewer" style="display:none;flex:1;flex-direction:column;overflow:hidden">
+      <div class="code-viewer" style="height:100%">
+        <div class="viewer-toolbar">
+          <div class="viewer-search">
+            <svg data-lucide="search" width="13" height="13"></svg>
+            <input id="out-search" type="text" placeholder="Search output…" aria-label="Search output">
+            <span class="viewer-matches" id="out-matches"></span>
+          </div>
+          <button class="btn btn-ghost btn-icon btn-sm" id="btn-copy-output-2" data-tooltip="Copy">
+            <svg data-lucide="copy" class="icon-sm"></svg>
+          </button>
+        </div>
+        <div class="code-scroll-area" id="out-scroll-area">
+          <div class="code-inner">
+            <div class="line-numbers" id="out-nums"></div>
+            <div class="code-lines"   id="out-lines"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /panel-output -->
+</div><!-- /app-layout -->
+
+<!-- ─── BACKEND SETTINGS MODAL ───────────────────────────────────── -->
+<div class="modal-overlay hidden" id="backend-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <h2 class="modal-title" id="modal-title">Backend Configuration</h2>
+    <p class="modal-desc">
+      Full deobfuscation requires a server running Node.js 18+ and Python 3.10+.
+      Leave blank to use the current origin (works when running <code class="mono">node server.js</code> locally).
+    </p>
+    <div class="modal-field">
+      <label class="modal-label" for="modal-url">Backend URL</label>
+      <input
+        class="modal-input"
+        id="modal-url"
+        type="url"
+        placeholder="http://localhost:3000"
+        autocomplete="off"
+        spellcheck="false"
+        aria-label="Backend server URL"
+      >
+      <div class="modal-hint">
+        Example: <code>http://localhost:3000</code> or <code>https://my-vps.example.com</code>
+        <br><br>
+        To start the full local server:<br>
+        <code>export DEOBF_PATH=/path/to/Deobfuscator-Luraph-V15</code><br>
+        <code>node server.js</code>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" id="modal-close">Cancel</button>
+      <button class="btn btn-primary" id="modal-save">Save & Reconnect</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
+<script>
+  lucide.createIcons();
+</script>
+<script type="module" src="assets/js/app.js"></script>
+<script>
+  // Wire the secondary copy button in the output viewer
+  document.getElementById('btn-copy-output-2')?.addEventListener('click', () => {
+    document.getElementById('btn-copy-output')?.click();
+  });
+  // Re-run icons after module load (for dynamically created elements)
+  setTimeout(() => { if (window.lucide) lucide.createIcons(); }, 500);
+</script>
+</body>
+</html>

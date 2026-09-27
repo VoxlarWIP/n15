@@ -1,0 +1,23 @@
+{
+  "name": "no-v15today",
+  "version": "1.0.0",
+  "description": "NO-V15Today — Web frontend for the Luraph V15 Deobfuscator",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'Static project — no build step required. Deploy the root directory to Vercel.'"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "multer": "^1.4.5-lts.1",
+    "uuid": "^9.0.1"
+  },
+  "keywords": ["luraph", "deobfuscator", "roblox", "luau", "v15"],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

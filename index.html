@@ -4,11 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>NO-V15Today — Luraph V15 Deobfuscator</title>
-  <meta name="description" content="Free web interface for the open-source Luraph V15 deobfuscator. Recover clean Luau source code from protected Roblox scripts.">
+  <meta name="description" content="Free web interface for the open-source Luraph V15 deobfuscator. Recover clean Luau source from protected Roblox scripts.">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔓</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="assets/css/index.css">
 </head>
@@ -17,376 +17,474 @@
 <!-- ─── NAV ──────────────────────────────────────────────────── -->
 <nav class="nav">
   <div class="container nav-inner">
-    <a href="/" class="nav-logo" aria-label="NO-V15Today home">
-      <span class="logo-badge">NO</span>
+    <a href="index.html" class="nav-logo">
+      <span class="logo-mark">NO</span>
       V15Today
     </a>
     <div class="nav-links">
-      <a href="#how-it-works" class="btn btn-ghost btn-sm">How it works</a>
-      <a href="#credits" class="btn btn-ghost btn-sm">Credits</a>
-      <a href="deobf.html" class="btn btn-primary btn-sm">
+      <a href="#pipeline" class="btn btn-ghost btn-sm nav-ghost">Pipeline</a>
+      <a href="#credits"  class="btn btn-ghost btn-sm nav-ghost">Credits</a>
+      <span class="sep"></span>
+      <a href="deobf.html"
+         onclick="event.preventDefault(); window.location.href='deobf.html';"
+         class="btn btn-primary btn-sm">
         <svg data-lucide="zap" class="icon-sm"></svg>
         Launch App
+        <svg data-lucide="arrow-right" class="icon-sm btn-arrow"></svg>
       </a>
     </div>
   </div>
 </nav>
 
 <!-- ─── HERO ─────────────────────────────────────────────────── -->
-<section class="hero animate-fade">
-  <div class="container">
-    <div class="hero-eyebrow">
+<section class="hero">
+  <div class="container hero-inner">
+
+    <div class="hero-eyebrow animate-fade">
       <span class="dot"></span>
-      MIT Licensed · Free · Open Source
+      open source &nbsp;·&nbsp; mit licensed &nbsp;·&nbsp; no uploads
     </div>
-    <h1>Luraph V15 protection.<br>Gone.</h1>
-    <p class="hero-sub">
-      Full devirtualization and control-flow recovery for Roblox Luau scripts
-      protected by Luraph v15. Five-stage reverse compilation pipeline.
-      No subscription required.
-    </p>
-    <div class="hero-cta">
-      <a href="deobf.html" class="btn btn-primary">
+
+    <h1 class="hero-headline animate-up d-1">
+      V15 PROTECTION.<br>
+      <span class="dim">GONE.</span>
+    </h1>
+
+    <div class="hero-sub-line animate-up d-2">
+      <span>$ deobf script.lua</span>
+      <span class="pipe">|</span>
+      <span>six-stage devirt</span>
+      <span class="pipe">|</span>
+      <span>runs locally</span>
+      <span class="pipe">|</span>
+      <span>no subscription</span>
+      <span class="cursor"></span>
+    </div>
+
+    <div class="hero-cta animate-up d-3">
+      <a href="deobf.html"
+         onclick="event.preventDefault(); window.location.href='deobf.html';"
+         class="btn btn-primary">
         <svg data-lucide="terminal" class="icon-md"></svg>
         Open Deobfuscator
+        <span class="btn-arrow"><svg data-lucide="arrow-right" class="icon-sm"></svg></span>
       </a>
-      <a href="https://github.com/caomod2077/Deobfuscator-Luraph-V15" target="_blank" rel="noopener" class="btn">
+      <a href="https://github.com/caomod2077/Deobfuscator-Luraph-V15"
+         target="_blank" rel="noopener" class="btn">
         <svg data-lucide="github" class="icon-md"></svg>
         View Engine Source
       </a>
     </div>
-    <p class="hero-note">
-      <svg data-lucide="lock" width="13" height="13"></svg>
-      Your scripts never leave your network. Processing happens server-side on your own machine.
-    </p>
 
-    <div class="quip" style="max-width:540px;margin:36px auto 0;text-align:left;">
-      Free plan, Pro, or Enterprise. The price tag doesn't change what the VM has to execute.<br>
-      <span style="color:var(--text-dim);">— Every obfuscated script, eventually.</span>
+    <div class="hero-stats animate-up d-4">
+      <div class="hero-stat">
+        <svg data-lucide="layers" width="12" height="12"></svg>
+        <strong>6</strong> stages
+      </div>
+      <div class="hero-stat">
+        <svg data-lucide="shield" width="12" height="12"></svg>
+        <strong>MIT</strong> license
+      </div>
+      <div class="hero-stat">
+        <svg data-lucide="server" width="12" height="12"></svg>
+        <strong>local</strong> execution
+      </div>
+      <div class="hero-stat">
+        <svg data-lucide="upload-cloud" width="12" height="12"></svg>
+        <strong>0</strong> uploads
+      </div>
     </div>
+
   </div>
 </section>
 
-<!-- ─── HOW IT WORKS ────────────────────────────────────────── -->
-<section class="pipeline" id="how-it-works">
+<!-- ─── PIPELINE ─────────────────────────────────────────────── -->
+<section class="section" id="pipeline">
   <div class="container">
-    <div class="section-label reveal">Pipeline</div>
-    <h2 class="section-title reveal animate-delay-1">Five-stage reverse compiler</h2>
-    <p class="section-sub reveal animate-delay-2">
-      Luraph V15 compiles scripts into a custom virtual machine with encrypted constants,
-      flattened control flow, and active anti-tamper traps. This engine reverses each layer.
+    <div class="section-eyebrow reveal">// pipeline</div>
+    <h2 class="section-title reveal d-1">Five-stage reverse compiler</h2>
+    <p class="section-sub reveal d-2">
+      Luraph V15 compiles Luau into a custom virtual machine with encrypted constants,
+      flattened control flow, and active anti-tamper traps. This engine peels each layer back.
     </p>
 
+    <!-- Flow diagram -->
+    <div class="flow-bar reveal d-2">
+      <div class="flow-node">
+        <span class="flow-num">01</span>
+        <span class="flow-label">AST</span>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-line"></div>
+        <span class="flow-arrowhead">›</span>
+      </div>
+      <div class="flow-node">
+        <span class="flow-num">02</span>
+        <span class="flow-label">Sandbox</span>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-line"></div>
+        <span class="flow-arrowhead">›</span>
+      </div>
+      <div class="flow-node">
+        <span class="flow-num">03</span>
+        <span class="flow-label">Decrypt</span>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-line"></div>
+        <span class="flow-arrowhead">›</span>
+      </div>
+      <div class="flow-node">
+        <span class="flow-num">04</span>
+        <span class="flow-label">CFG</span>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-line"></div>
+        <span class="flow-arrowhead">›</span>
+      </div>
+      <div class="flow-node">
+        <span class="flow-num">05</span>
+        <span class="flow-label">SSA</span>
+      </div>
+      <div class="flow-arrow">
+        <div class="flow-line"></div>
+        <span class="flow-arrowhead">›</span>
+      </div>
+      <div class="flow-node">
+        <span class="flow-num">06</span>
+        <span class="flow-label">Format</span>
+      </div>
+    </div>
+
+    <!-- Stage cards -->
     <div class="stages-grid">
-      <div class="stage-card reveal">
-        <div class="stage-num">Stage 01</div>
+
+      <div class="stage-card reveal" data-num="01">
+        <div class="stage-tag">Stage 01 · vmmap.js</div>
         <div class="stage-name">AST Analysis &amp; Hooking</div>
         <div class="stage-desc">Parses the protected script with a Luau AST parser. Maps VM dispatcher loops and closure constructors. Injects non-destructive telemetry hooks to track proto execution and register states without altering behavior.</div>
-        <span class="stage-file">vmmap.js</span>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> vmmap.js</span>
       </div>
-      <div class="stage-card reveal animate-delay-1">
-        <div class="stage-num">Stage 02</div>
+
+      <div class="stage-card reveal d-1" data-num="02">
+        <div class="stage-tag">Stage 02 · harness.js</div>
         <div class="stage-name">Sandboxed Simulation</div>
-        <div class="stage-desc">Executes the hooked script inside an offline Roblox engine emulator. If execution hits an anti-tamper trap (LPH_CRASH), the engine identifies the function, disables that trap path, and re-runs along stable branches.</div>
-        <span class="stage-file">driver.js · harness.js · envlog.luau</span>
+        <div class="stage-desc">Executes the hooked script inside an offline Roblox engine emulator. When anti-tamper traps fire (LPH_CRASH), the engine identifies the function, disables that trap path, and re-runs along stable branches.</div>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> driver.js · harness.js · envlog.luau</span>
       </div>
-      <div class="stage-card reveal animate-delay-2">
-        <div class="stage-num">Stage 03</div>
+
+      <div class="stage-card reveal d-2" data-num="03">
+        <div class="stage-tag">Stage 03 · devirt.js + luasym.py</div>
         <div class="stage-name">Live REPL Decryption</div>
-        <div class="stage-desc">Luraph's lazy encryption requires dynamic keys only available at runtime. The engine queries a live Luau REPL process via IPC to decrypt thousands of string and numeric constants on-the-fly. Resolves 2,000–2,600 constants per pass.</div>
-        <span class="stage-file">devirt.js · luasym.py</span>
+        <div class="stage-desc">Luraph's lazy encryption requires dynamic runtime keys. The engine queries a live Luau REPL process via IPC pipe to decrypt 2,000–2,600 string and numeric constants per pass. Resolves in multiple rounds until convergence.</div>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> devirt.js · luasym.py</span>
       </div>
-      <div class="stage-card reveal animate-delay-3">
-        <div class="stage-num">Stage 04</div>
+
+      <div class="stage-card reveal d-3" data-num="04">
+        <div class="stage-tag">Stage 04 · structure.py</div>
         <div class="stage-name">CFG Reconstruction</div>
-        <div class="stage-desc">Uses Sparse Conditional Constant Propagation (SCCP) to trace virtual register values. Assembles basic blocks into a directed control flow graph. Dominator tree analysis restores nested loops and branching logic. Prunes dead blocks from opaque predicates.</div>
-        <span class="stage-file">structure.py · loops.py</span>
+        <div class="stage-desc">Uses Sparse Conditional Constant Propagation (SCCP) to trace virtual register values. Assembles basic blocks into a directed control-flow graph. Dominator-tree analysis restores nested loops and branches. Prunes dead blocks from opaque predicates.</div>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> structure.py · loops.py</span>
       </div>
-      <div class="stage-card reveal animate-delay-4">
-        <div class="stage-num">Stage 05</div>
+
+      <div class="stage-card reveal d-4" data-num="05">
+        <div class="stage-tag">Stage 05 · variables.py</div>
         <div class="stage-name">Register Web Analysis</div>
-        <div class="stage-desc">Maps virtual registers across basic block boundaries using Static Single Assignment (SSA) web analysis. Assigns context-aware variable names inferred from Roblox API usage (Players, TweenService, ReplicatedStorage, etc.).</div>
-        <span class="stage-file">variables.py · codegen.py</span>
+        <div class="stage-desc">Maps virtual registers across basic block boundaries using Static Single Assignment (SSA) web analysis. Assigns context-aware variable names inferred from Roblox API usage — Players, TweenService, ReplicatedStorage and more.</div>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> variables.py · codegen.py</span>
       </div>
-      <div class="stage-card reveal animate-delay-5">
-        <div class="stage-num">Stage 06</div>
+
+      <div class="stage-card reveal d-5" data-num="06">
+        <div class="stage-tag">Stage 06 · backend.py</div>
         <div class="stage-name">Polish &amp; Formatting</div>
-        <div class="stage-desc">Converts function assignments into idiomatic Luau syntax. Formats with proper indentation. Verifies output through a compile check to guarantee 100% executable syntax. Fast-path controller skips redundant passes once all constants are resolved.</div>
-        <span class="stage-file">backend.py · tidy.js</span>
+        <div class="stage-desc">Converts function assignments into idiomatic Luau syntax. Formats with correct indentation. Verifies output through a compile check guaranteeing 100% executable syntax. Fast-path controller skips redundant passes once constants are resolved.</div>
+        <span class="stage-file"><svg data-lucide="file" width="10" height="10"></svg> backend.py · tidy.js</span>
       </div>
+
     </div>
+
+    <div class="quip-block reveal d-3" style="margin-top:48px">
+      <p>Free plan, Pro, or Enterprise. The price tag doesn't change what the virtual machine has to execute.</p>
+      <cite>— Every Luraph-protected script, eventually.</cite>
+    </div>
+
   </div>
 </section>
 
-<!-- ─── PRIVACY / ARCHITECTURE ─────────────────────────────── -->
-<section class="privacy">
+<!-- ─── PRIVACY ───────────────────────────────────────────────── -->
+<section class="section" id="privacy">
   <div class="container">
-    <div class="section-label reveal">Privacy</div>
+    <div class="section-eyebrow reveal">// architecture</div>
+    <h2 class="section-title reveal d-1">Your scripts never leave your network</h2>
+
     <div class="privacy-grid">
-      <div>
-        <h2 class="section-title reveal animate-delay-1">Your scripts stay in your network</h2>
-        <p style="color:var(--text-secondary);margin-bottom:28px;font-size:.9rem;line-height:1.7" class="reveal animate-delay-2">
-          NO-V15Today is a web interface that calls the deobfuscator engine running on
-          <strong>your own server or machine</strong>. Scripts are processed locally and
-          never transmitted to third-party services.
-        </p>
-        <div class="privacy-points">
-          <div class="privacy-point reveal animate-delay-2">
-            <div class="privacy-point-icon"><svg data-lucide="server" width="15" height="15"></svg></div>
-            <div>
-              <div class="privacy-point-title">Self-hosted engine</div>
-              <div class="privacy-point-text">The deobfuscation engine runs on a machine you control. No cloud backend, no upload API, no analytics.</div>
+
+      <div class="terminal-block corners reveal d-2">
+        <div class="terminal-titlebar">
+          <div class="t-dot"></div>
+          <div class="t-dot"></div>
+          <div class="t-dot"></div>
+          <span class="terminal-title">data-flow.sh</span>
+        </div>
+        <div class="terminal-body">
+          <div class="t-line">
+            <div class="t-node">
+              <svg data-lucide="file-code-2" width="13" height="13"></svg>
+              <div>
+                <div class="t-label">Protected .lua script</div>
+                <div class="t-sub">your input file</div>
+              </div>
             </div>
           </div>
-          <div class="privacy-point reveal animate-delay-3">
-            <div class="privacy-point-icon"><svg data-lucide="trash-2" width="15" height="15"></svg></div>
-            <div>
-              <div class="privacy-point-title">Temporary files only</div>
-              <div class="privacy-point-text">Input scripts are written to <code class="mono">/tmp</code>, processed, and deleted. No persistent storage.</div>
+          <div class="t-arrow">↓</div>
+          <div class="t-line">
+            <div class="t-node">
+              <svg data-lucide="monitor" width="13" height="13"></svg>
+              <div>
+                <div class="t-label">Browser (NO-V15Today UI)</div>
+                <div class="t-sub">POST to your own server only</div>
+              </div>
             </div>
           </div>
-          <div class="privacy-point reveal animate-delay-4">
-            <div class="privacy-point-icon"><svg data-lucide="shield-off" width="15" height="15"></svg></div>
-            <div>
-              <div class="privacy-point-title">No telemetry</div>
-              <div class="privacy-point-text">This interface contains no analytics libraries, trackers, or beacons. What you paste stays between you and your server.</div>
+          <div class="t-arrow">↓</div>
+          <div class="t-line">
+            <div class="t-node ok">
+              <svg data-lucide="cpu" width="13" height="13"></svg>
+              <div>
+                <div class="t-label">Your server / machine</div>
+                <div class="t-sub">Node.js + Python engine runs here</div>
+              </div>
+            </div>
+          </div>
+          <div class="t-arrow">↓</div>
+          <div class="t-line">
+            <div class="t-node ok">
+              <svg data-lucide="code-2" width="13" height="13"></svg>
+              <div>
+                <div class="t-label">Clean Luau source</div>
+                <div class="t-sub">returned to browser</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="privacy-diagram reveal animate-delay-2">
-        <div class="pdiag-node">
-          <div class="pdiag-icon"><svg data-lucide="file-code-2" width="16" height="16"></svg></div>
-          <div><div class="pdiag-label">Protected .lua script</div><div class="pdiag-sub">Your input file</div></div>
+
+      <div class="privacy-points reveal d-3">
+        <div class="pp">
+          <div class="pp-icon"><svg data-lucide="server" width="14" height="14"></svg></div>
+          <div>
+            <div class="pp-title">Self-hosted engine</div>
+            <div class="pp-text">The deobfuscation pipeline runs on a machine you control. No cloud backend, no upload API, no analytics systems in the data path.</div>
+          </div>
         </div>
-        <div class="pdiag-arrow"></div>
-        <div class="pdiag-node">
-          <div class="pdiag-icon"><svg data-lucide="monitor" width="16" height="16"></svg></div>
-          <div><div class="pdiag-label">Browser</div><div class="pdiag-sub">Sends to local server only</div></div>
+        <div class="pp">
+          <div class="pp-icon"><svg data-lucide="trash-2" width="14" height="14"></svg></div>
+          <div>
+            <div class="pp-title">Temporary files only</div>
+            <div class="pp-text">Input scripts are written to <code style="font-family:var(--font-mono);background:var(--bg-panel);padding:1px 5px;border-radius:3px;border:1px solid var(--border)">/tmp</code> with a UUID filename, processed, and deleted. No persistent storage.</div>
+          </div>
         </div>
-        <div class="pdiag-arrow"></div>
-        <div class="pdiag-node highlight">
-          <div class="pdiag-icon"><svg data-lucide="cpu" width="16" height="16"></svg></div>
-          <div><div class="pdiag-label">Your server / machine</div><div class="pdiag-sub">Node.js + Python engine runs here</div></div>
-        </div>
-        <div class="pdiag-arrow"></div>
-        <div class="pdiag-node highlight">
-          <div class="pdiag-icon"><svg data-lucide="code-2" width="16" height="16"></svg></div>
-          <div><div class="pdiag-label">Clean Luau source</div><div class="pdiag-sub">Returned to your browser</div></div>
+        <div class="pp">
+          <div class="pp-icon"><svg data-lucide="eye-off" width="14" height="14"></svg></div>
+          <div>
+            <div class="pp-title">Zero telemetry</div>
+            <div class="pp-text">This interface contains no analytics libraries, trackers, or reporting beacons. What you paste stays between you and your server.</div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- ─── COMPATIBILITY ──────────────────────────────────────── -->
-<section class="compat">
+<!-- ─── COMPAT ────────────────────────────────────────────────── -->
+<section class="section" id="compat">
   <div class="container">
-    <div class="section-label reveal">Compatibility</div>
-    <h2 class="section-title reveal animate-delay-1">What runs where</h2>
-    <p class="section-sub reveal animate-delay-2">
-      The web interface runs on any modern browser. The deobfuscation engine requires
-      a server with Node.js 18+ and Python 3.10+.
-    </p>
+    <div class="section-eyebrow reveal">// compatibility</div>
+    <h2 class="section-title reveal d-1">What runs where</h2>
+    <p class="section-sub reveal d-2">Full deobfuscation requires a server with Node.js 18+ and Python 3.10+. The web interface works on any modern browser.</p>
 
-    <table class="compat-table reveal animate-delay-2">
+    <table class="compat-table reveal d-2">
       <thead>
         <tr>
           <th>Environment</th>
           <th>Interface</th>
-          <th>Detection Mode</th>
+          <th>Detection</th>
           <th>Trace Mode</th>
           <th>Full Devirt</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td><strong>Vercel (static CDN)</strong></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-no"><svg data-lucide="x" width="13" height="13"></svg>No</span></td>
-          <td><span class="compat-no"><svg data-lucide="x" width="13" height="13"></svg>No</span></td>
+          <td>Vercel (static CDN)</td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-no"><svg data-lucide="x" width="12" height="12"></svg> No</span></td>
+          <td><span class="c-no"><svg data-lucide="x" width="12" height="12"></svg> No</span></td>
         </tr>
         <tr>
-          <td><strong>Local machine (Node.js + Python)</strong></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
+          <td>Local machine (Node + Python)</td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
         </tr>
         <tr>
-          <td><strong>VPS (Ubuntu/Debian, Node.js + Python)</strong></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
+          <td>VPS — Ubuntu / Debian</td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
         </tr>
         <tr>
-          <td><strong>Windows (local, WSL)</strong></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-partial"><svg data-lucide="minus" width="13" height="13"></svg>Via WSL</span></td>
-          <td><span class="compat-partial"><svg data-lucide="minus" width="13" height="13"></svg>Via WSL</span></td>
+          <td>Windows (WSL)</td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-part"><svg data-lucide="minus" width="12" height="12"></svg> Via WSL</span></td>
+          <td><span class="c-part"><svg data-lucide="minus" width="12" height="12"></svg> Via WSL</span></td>
         </tr>
         <tr>
-          <td><strong>Android / iOS (browser)</strong></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-check"><svg data-lucide="check" width="13" height="13"></svg>Yes</span></td>
-          <td><span class="compat-no"><svg data-lucide="x" width="13" height="13"></svg>Server needed</span></td>
-          <td><span class="compat-no"><svg data-lucide="x" width="13" height="13"></svg>Server needed</span></td>
+          <td>Android / iOS (browser)</td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-yes"><svg data-lucide="check" width="12" height="12"></svg> Yes</span></td>
+          <td><span class="c-no"><svg data-lucide="x" width="12" height="12"></svg> Server needed</span></td>
+          <td><span class="c-no"><svg data-lucide="x" width="12" height="12"></svg> Server needed</span></td>
         </tr>
       </tbody>
     </table>
-    <p style="font-size:.75rem;color:var(--text-muted);margin-top:10px" class="reveal">
-      * Full devirt requires Python 3.10+ for stages 3–6. Vercel's serverless environment does not include a Python runtime.
-      The Luau binaries in the engine repo are compiled for Linux x86_64.
+    <p style="font-size:.72rem;color:var(--text-dim);margin-top:10px;font-family:var(--font-mono)" class="reveal">
+      * Vercel Lambda has no Python runtime. Luau binaries require Linux x86_64. Full devirt stages 3–6 need Python 3.10+.
     </p>
   </div>
 </section>
 
-<!-- ─── HOW TO USE ────────────────────────────────────────── -->
-<section class="howto">
+<!-- ─── SETUP ──────────────────────────────────────────────────── -->
+<section class="section" id="setup">
   <div class="container">
-    <div class="section-label reveal">Setup</div>
-    <h2 class="section-title reveal animate-delay-1">Get started in four steps</h2>
+    <div class="section-eyebrow reveal">// quick start</div>
+    <h2 class="section-title reveal d-1">Up in four steps</h2>
 
-    <div class="steps">
+    <div class="steps-list">
       <div class="step reveal">
-        <div class="step-num">01</div>
-        <div>
-          <div class="step-title">Clone the deobfuscator engine</div>
-          <div class="step-desc">The actual deobfuscation logic lives in the original repository. Clone it and install (it has no npm dependencies, but the clone brings the Luau binaries).</div>
-          <div class="step-code">git clone https://github.com/caomod2077/Deobfuscator-Luraph-V15.git</div>
+        <div class="step-num">01.</div>
+        <div class="step-body">
+          <div class="step-title">Clone the engine</div>
+          <div class="step-desc">The deobfuscation logic lives in the original repo. Clone it to get the Luau binaries and pipeline scripts.</div>
+          <div class="code-block">
+            <span class="prompt">$ </span><span class="cmd">git clone https://github.com/caomod2077/Deobfuscator-Luraph-V15.git</span>
+          </div>
         </div>
       </div>
-      <div class="step reveal animate-delay-1">
-        <div class="step-num">02</div>
-        <div>
-          <div class="step-title">Install this website's server dependencies</div>
-          <div class="step-desc">In the NO-V15Today directory, install the Express server dependencies so the web interface can communicate with the engine.</div>
-          <div class="step-code">cd no-v15today
-npm install</div>
+      <div class="step reveal d-1">
+        <div class="step-num">02.</div>
+        <div class="step-body">
+          <div class="step-title">Install server dependencies</div>
+          <div class="step-desc">In the NO-V15Today directory, install Express and the other server packages.</div>
+          <div class="code-block">
+            <span class="prompt">$ </span><span class="cmd">cd no-v15today && npm install</span>
+          </div>
         </div>
       </div>
-      <div class="step reveal animate-delay-2">
-        <div class="step-num">03</div>
-        <div>
-          <div class="step-title">Configure the engine path and start the server</div>
-          <div class="step-desc">Point the server at the cloned engine repo, then start. Requires Node.js 18+ and Python 3.10+.</div>
-          <div class="step-code">export DEOBF_PATH=/path/to/Deobfuscator-Luraph-V15
-node server.js</div>
+      <div class="step reveal d-2">
+        <div class="step-num">03.</div>
+        <div class="step-body">
+          <div class="step-title">Configure and start</div>
+          <div class="step-desc">Point the server at the engine repo. Requires Node.js 18+ and Python 3.10+.</div>
+          <div class="code-block">
+<span class="prompt">$ </span><span class="cmd">export DEOBF_PATH=/path/to/Deobfuscator-Luraph-V15</span>
+<span class="prompt">$ </span><span class="cmd">node server.js</span>
+<span class="comment">  ✓  All systems ready. Open http://localhost:3000</span>
+          </div>
         </div>
       </div>
-      <div class="step reveal animate-delay-3">
-        <div class="step-num">04</div>
-        <div>
+      <div class="step reveal d-3">
+        <div class="step-num">04.</div>
+        <div class="step-body">
           <div class="step-title">Open the interface</div>
-          <div class="step-desc">Open <strong>http://localhost:3000</strong> in your browser. Upload or paste a Luraph V15-protected script and click Deobfuscate.</div>
+          <div class="step-desc">Navigate to <strong>http://localhost:3000</strong> — or click below to go straight to the app (if already running).</div>
+          <div style="margin-top:12px">
+            <a href="deobf.html"
+               onclick="event.preventDefault(); window.location.href='deobf.html';"
+               class="btn btn-sm">
+              <svg data-lucide="external-link" class="icon-sm"></svg>
+              Go to Deobfuscator
+            </a>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div style="margin-top:32px" class="reveal">
-      <p style="font-size:.82rem;color:var(--text-muted);margin-bottom:8px;">For Vercel deployment (detection mode + frontend only):</p>
-      <div class="step-code" style="font-size:.8rem;">npm run build
-vercel --prod</div>
-      <p style="font-size:.76rem;color:var(--text-dim);margin-top:8px;">
-        When deployed to Vercel, the interface is fully functional but deobfuscation requires a self-hosted backend.
-        Configure the backend URL in the app's Settings panel (⚙ icon, top right).
-      </p>
     </div>
   </div>
 </section>
 
-<!-- ─── CREDITS ───────────────────────────────────────────── -->
-<section class="credits" id="credits">
+<!-- ─── CREDITS ───────────────────────────────────────────────── -->
+<section class="section" id="credits">
   <div class="container">
-    <div class="section-label reveal">Credits</div>
-    <h2 class="section-title reveal animate-delay-1">Attribution &amp; open-source</h2>
-    <p class="section-sub reveal animate-delay-2">
-      NO-V15Today is an independent web interface. It wraps and calls the original engine.
-      All deobfuscation logic is the work of the original author.
-    </p>
+    <div class="section-eyebrow reveal">// attribution</div>
+    <h2 class="section-title reveal d-1">Credits</h2>
+    <p class="section-sub reveal d-2">NO-V15Today is an independent web interface. All deobfuscation logic belongs to the original author.</p>
 
     <div class="credits-grid">
       <div class="credit-card reveal">
-        <div class="credit-top">
-          <div class="credit-icon"><svg data-lucide="code-2" width="16" height="16"></svg></div>
+        <div class="credit-header">
+          <div class="credit-icon"><svg data-lucide="code-2" width="15" height="15"></svg></div>
           <div>
             <div class="credit-name">Luraph V15 Deobfuscator</div>
-            <div class="credit-role">Original engine · caomod2077</div>
+            <div class="credit-role">engine · caomod2077</div>
           </div>
         </div>
-        <div class="credit-desc">
-          The standalone Node.js + Python reverse compiler that performs all actual deobfuscation.
-          This project would not exist without it. All pipeline stages, algorithms, and Luau runtime
-          binaries are original work by caomod2077. Licensed under MIT.
-        </div>
+        <div class="credit-desc">The Node.js + Python pipeline that performs all actual deobfuscation. Every algorithm, the Luau runtime emulator, SCCP, CFG reconstruction, and SSA naming are original work by caomod2077. Licensed MIT.</div>
         <a href="https://github.com/caomod2077/Deobfuscator-Luraph-V15" target="_blank" rel="noopener" class="credit-link">
-          <svg data-lucide="external-link" width="12" height="12"></svg>
-          github.com/caomod2077/Deobfuscator-Luraph-V15
+          <svg data-lucide="github" width="11" height="11"></svg>
+          caomod2077/Deobfuscator-Luraph-V15
         </a>
       </div>
-
-      <div class="credit-card reveal animate-delay-1">
-        <div class="credit-top">
-          <div class="credit-icon"><svg data-lucide="globe" width="16" height="16"></svg></div>
+      <div class="credit-card reveal d-1">
+        <div class="credit-header">
+          <div class="credit-icon"><svg data-lucide="globe" width="15" height="15"></svg></div>
           <div>
             <div class="credit-name">NO-V15Today Interface</div>
-            <div class="credit-role">Web UI · Independent project</div>
+            <div class="credit-role">web ui · independent project</div>
           </div>
         </div>
-        <div class="credit-desc">
-          The web frontend, Express server wrapper, and configuration interface. An independent,
-          non-commercial project. Not affiliated with Luraph, lura.ph, or caomod2077 beyond
-          calling their open-source CLI. MIT licensed.
-        </div>
+        <div class="credit-desc">The web frontend, Express server wrapper, virtual-scroll code viewer, and configuration interface. An independent, non-commercial project. Not affiliated with Luraph or lura.ph beyond calling their open-source CLI. MIT licensed.</div>
         <span class="credit-link" style="cursor:default">
-          <svg data-lucide="info" width="12" height="12"></svg>
-          Not affiliated with lura.ph or Luraph
+          <svg data-lucide="alert-circle" width="11" height="11"></svg>
+          Not affiliated with lura.ph
         </span>
       </div>
-
-      <div class="credit-card reveal animate-delay-2">
-        <div class="credit-top">
-          <div class="credit-icon"><svg data-lucide="package" width="16" height="16"></svg></div>
+      <div class="credit-card reveal d-2">
+        <div class="credit-header">
+          <div class="credit-icon"><svg data-lucide="package" width="15" height="15"></svg></div>
           <div>
-            <div class="credit-name">Open-Source Tooling</div>
-            <div class="credit-role">Express · Lucide Icons · JetBrains Mono</div>
+            <div class="credit-name">Open-Source Tools</div>
+            <div class="credit-role">express · lucide · jetbrains mono</div>
           </div>
         </div>
-        <div class="credit-desc">
-          Server: Express.js (MIT). Icons: Lucide (ISC). Typography: Inter (SIL OFL),
-          JetBrains Mono (OFL). All used in accordance with their respective licenses.
-        </div>
+        <div class="credit-desc">Server: Express.js (MIT). Icons: Lucide (ISC). Typography: Inter (SIL OFL), JetBrains Mono (OFL). All used in accordance with their respective licenses.</div>
         <span class="credit-link" style="cursor:default">
-          <svg data-lucide="heart" width="12" height="12"></svg>
+          <svg data-lucide="heart" width="11" height="11"></svg>
           Open-source ecosystem
         </span>
       </div>
     </div>
 
-    <div class="disclaimer reveal animate-delay-2">
-      <svg data-lucide="alert-triangle" width="15" height="15" style="color:var(--warn);flex-shrink:0;margin-top:1px"></svg>
+    <div class="disclaimer reveal d-2">
+      <svg data-lucide="alert-triangle" width="14" height="14"></svg>
       <div>
         <strong style="color:var(--text-secondary)">Disclaimer:</strong>
-        NO-V15Today is an independent project and is <strong>not officially affiliated</strong> with
-        Luraph, lura.ph, or the original engine author beyond using their MIT-licensed open-source
-        code. This tool is intended for legitimate use cases such as auditing scripts you own or
-        have authorization to inspect. The MIT license of the original engine is preserved in full
-        (see LICENSE file). Use responsibly and in accordance with applicable terms of service.
+        NO-V15Today is an independent project and is <strong>not officially affiliated</strong> with Luraph, lura.ph, or the original engine author beyond using their MIT-licensed open-source code. Use responsibly and in accordance with applicable terms of service. The MIT license of the original engine is preserved in full.
       </div>
     </div>
   </div>
 </section>
 
-<!-- ─── FOOTER ────────────────────────────────────────────── -->
+<!-- ─── FOOTER ────────────────────────────────────────────────── -->
 <footer class="footer">
   <div class="container footer-inner">
-    <span class="footer-copy">NO-V15Today © 2026 · Based on work by caomod2077 (MIT)</span>
+    <span class="footer-copy">NO-V15Today © 2026 &nbsp;·&nbsp; engine by caomod2077 (MIT)</span>
     <div class="footer-links">
-      <a href="deobf.html">App</a>
-      <a href="https://github.com/caomod2077/Deobfuscator-Luraph-V15" target="_blank" rel="noopener">Engine Source</a>
+      <a href="deobf.html" onclick="event.preventDefault(); window.location.href='deobf.html';">App</a>
+      <a href="https://github.com/caomod2077/Deobfuscator-Luraph-V15" target="_blank" rel="noopener">Source</a>
       <a href="LICENSE">License</a>
     </div>
   </div>
@@ -394,13 +492,23 @@ vercel --prod</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.383.0/umd/lucide.min.js"></script>
 <script>
+  // Icons
   lucide.createIcons();
 
-  // Scroll-reveal
-  const observer = new IntersectionObserver((entries) => {
+  // Scroll reveal
+  const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
-  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+  // Explicit nav link handler (belt-and-suspenders fix)
+  document.querySelectorAll('a[href="deobf.html"]').forEach(a => {
+    a.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      window.location.href = 'deobf.html';
+    });
+  });
 </script>
 </body>
 </html>
